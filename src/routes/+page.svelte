@@ -5,6 +5,7 @@
    // import scene7aVid from '../../static/videos/scene7a.mp4';
   //  import scene7bVid from '../../static/videos/scene7b.mp4';
     import Controler from "../lib/components/controler_component.svelte"
+    export const prerender = true;
 
     let move = false;
     let activePage = "home";
