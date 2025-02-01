@@ -1,9 +1,9 @@
 <script>
     import {onMount} from "svelte";
     import {fade} from 'svelte/transition';
-   // import scene1aVid from '../../static/videos/scene1a.mp4';
-   // import scene7aVid from '../../static/videos/scene7a.mp4';
-  //  import scene7bVid from '../../static/videos/scene7b.mp4';
+    import scene1aVid from '../lib/videos/scene1a.mp4';
+    import scene7aVid from '../lib/videos/scene7a.mp4';
+    import scene7bVid from '../lib/videos/scene7b.mp4';
     import Controler from "../lib/components/controler_component.svelte"
     export const prerender = true;
 
@@ -12,9 +12,9 @@
     $: currentPage = pages.find(page => page.id === activePage);
 
     const pages = [
-        {id: "scene1a", img: "1a.png"},// vid: scene1aVid},
-        {id: "scene7a", img: "7a.png"},// vid: scene7aVid},
-        {id: "scene7b", img: "7b.png"}//, vid: scene7bVid}
+        {id: "scene1a", img: "1a.png", vid: scene1aVid},
+        {id: "scene7a", img: "7a.png", vid: scene7aVid},
+        {id: "scene7b", img: "7b.png", vid: scene7bVid}
     ];
 
     onMount(() => {
