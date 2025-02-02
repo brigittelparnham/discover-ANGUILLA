@@ -21,7 +21,7 @@
       p.setup = () => {
           // Create a temporary video element to get metadata
           let tempVideo = document.createElement("video");
-          tempVideo.src = "/videos/scene1a.mp4";
+          tempVideo.src = "/videos/scene1a2.mp4";
           console.log("Video file path:", tempVideo.src);
 
           tempVideo.onloadedmetadata = () => {
@@ -38,7 +38,7 @@
               p.pixelDensity(1);
 
               // Set up the video in p5
-              video = p.createVideo('/videos/scene1a.mp4', () => {
+              video = p.createVideo('/videos/scene1a2.mp4', () => {
                   video.size(p.width, p.height);
                   video.hide();
                   video.volume(0);

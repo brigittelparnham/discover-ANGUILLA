@@ -23,7 +23,7 @@
 
         p.setup = () => {
             let tempVideo = document.createElement("video");
-            tempVideo.src = '/videos/scene7b.mp4';
+            tempVideo.src = '/videos/scene7b1.mp4';
             tempVideo.onloadedmetadata = () => {
                 videoWidth = tempVideo.videoWidth;
                 videoHeight = tempVideo.videoHeight;
@@ -36,7 +36,7 @@
                 p.createCanvas(calculatedWidth, calculatedHeight);
                 p.pixelDensity(1);
 
-                video = p.createVideo('/videos/scene7b.mp4', () => {
+                video = p.createVideo('/videos/scene7b1.mp4', () => {
                     video.size(p.width, p.height);
                     video.hide();
                     video.volume(0);
