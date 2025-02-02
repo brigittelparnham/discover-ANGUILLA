@@ -1,6 +1,6 @@
 <script>
     import { writable } from "svelte/store";
-    import videoFile from "../videos/scene7b.mp4";
+    //import videoFile from "../videos/scene7b.mp4";
     import P5 from "p5-svelte";
     import { createNoise2D } from "simplex-noise";
 
@@ -35,7 +35,7 @@
                 p.createCanvas(calculatedWidth, calculatedHeight);
                 p.pixelDensity(1);
 
-                video = p.createVideo(videoFile, () => {
+                video = p.createVideo('/videos/scene7b.mp4', () => {
                     video.size(p.width, p.height);
                     video.hide();
                     video.volume(0);

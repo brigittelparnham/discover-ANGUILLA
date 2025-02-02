@@ -1,7 +1,7 @@
 <script>
   import { writable } from "svelte/store";
   import P5 from "p5-svelte";
-  import videoFile from "../videos/scene1a.mp4";
+ //import videoFile from "../videos/scene1a.mp4";
 
   export let noiseValue = 0;
   let blurAmount = writable(0);  // blurAmount for controlling blur
@@ -20,7 +20,7 @@
       p.setup = () => {
           // Create a temporary video element to get metadata
           let tempVideo = document.createElement("video");
-          tempVideo.src = videoFile;
+          tempVideo.src = "/videos/scene1a.mp4";
           tempVideo.onloadedmetadata = () => {
               videoWidth = tempVideo.videoWidth;
               videoHeight = tempVideo.videoHeight;
