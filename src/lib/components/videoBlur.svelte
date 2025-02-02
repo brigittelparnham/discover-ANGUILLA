@@ -22,6 +22,8 @@
           // Create a temporary video element to get metadata
           let tempVideo = document.createElement("video");
           tempVideo.src = "/videos/scene1a.mp4";
+          console.log("Video file path:", tempVideo.src);
+
           tempVideo.onloadedmetadata = () => {
               videoWidth = tempVideo.videoWidth;
               videoHeight = tempVideo.videoHeight;
