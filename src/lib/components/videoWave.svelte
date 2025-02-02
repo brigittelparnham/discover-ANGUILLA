@@ -22,7 +22,7 @@
 
         p.setup = () => {
             let tempVideo = document.createElement("video");
-            tempVideo.src = videoFile;
+            tempVideo.src = '/videos/scene7b.mp4';
             tempVideo.onloadedmetadata = () => {
                 videoWidth = tempVideo.videoWidth;
                 videoHeight = tempVideo.videoHeight;

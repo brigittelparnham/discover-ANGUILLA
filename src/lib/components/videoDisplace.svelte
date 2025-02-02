@@ -40,7 +40,7 @@
                 p.pixelDensity(1);
   
                 // Set up the video in p5
-                video1 = p.createVideo(videoFile, () => {
+                video1 = p.createVideo('/videos/scene7a.mp4', () => {
                     video1.size(p.width, p.height);
                     video1.hide();
                     video1.volume(0);
@@ -68,7 +68,7 @@
                 //p.pixelDensity(1);
   
                 // Set up the video in p5
-                video2 = p.createVideo(videoFile, () => {
+                video2 = p.createVideo('/videos/scene7a.mp4', () => {
                     video2.size(p.width, p.height);
                     video2.hide();
                     video2.volume(0);

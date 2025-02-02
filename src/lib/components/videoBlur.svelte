@@ -35,7 +35,7 @@
               p.pixelDensity(1);
 
               // Set up the video in p5
-              video = p.createVideo(videoFile, () => {
+              video = p.createVideo('/videos/scene1a.mp4', () => {
                   video.size(p.width, p.height);
                   video.hide();
                   video.volume(0);
