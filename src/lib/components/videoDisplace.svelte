@@ -54,6 +54,15 @@
                 video1.onplay = () => {
                     video1Playing.set(true);
                 };
+
+                            // Add event listener to prevent fullscreen
+            video1.elt.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent the browser's default action of fullscreen
+            });
+
+            // Ensure no fullscreen can be triggered by other means
+            video1.elt.setAttribute('webkit-playsinline', ''); // For iOS devices to play inline
+            video1.elt.setAttribute('playsinline', ''); // Standard plays inline for mobile browsers
             };
 
             temp2Video.onloadedmetadata = () => {
@@ -82,7 +91,18 @@
                 video2.onplay = () => {
                     video2Playing.set(true);
                 };
+
+                            // Add event listener to prevent fullscreen
+            video2.elt.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent the browser's default action of fullscreen
+            });
+
+            // Ensure no fullscreen can be triggered by other means
+            video2.elt.setAttribute('webkit-playsinline', ''); // For iOS devices to play inline
+            video2.elt.setAttribute('playsinline', ''); // Standard plays inline for mobile browsers
             };
+
+
         };
   
         p.windowResized = () => {

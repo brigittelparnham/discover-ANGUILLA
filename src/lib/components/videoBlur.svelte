@@ -51,6 +51,15 @@
               video.onplay = () => {
                   videoPlaying.set(true);
               };
+
+              // Add event listener to prevent fullscreen
+            video.elt.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent the browser's default action of fullscreen
+            });
+
+            // Ensure no fullscreen can be triggered by other means
+            video.elt.setAttribute('webkit-playsinline', ''); // For iOS devices to play inline
+            video.elt.setAttribute('playsinline', ''); // Standard plays inline for mobile browsers
           };
       };
 
