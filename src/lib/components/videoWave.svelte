@@ -84,6 +84,7 @@
                     let index = (x + y * p.width) * 4;
                     let offsetX = simplex(x * 0.1, y * 0.1) * ripple * 40;
                     let offsetY = simplex(x * 0.1 + 100, y * 0.1 + 100) * ripple * 40;
+                 
 
                     let newX = p.constrain(Math.floor(x + offsetX), 0, p.width - 1);
                     let newY = p.constrain(Math.floor(y + offsetY), 0, p.height - 1);

@@ -1,98 +1,135 @@
 <script>
-    import P5 from 'p5-svelte';
+    import { writable } from "svelte/store";
+    import P5 from "p5-svelte";
     import videoFile from "../videos/scene7a.mp4";
-    
+  
     export let noiseValue = 0;
-    let sliderValue = 0;
+    let displaceValue = writable(0);  // blurAmount for controlling blur
+    $: noiseValue, $displaceValue = noiseValue;
     let screenSize;
-
-    // Map slider value to the effect
-    $: noiseValue, sliderValue = noiseValue;
   
-    let video1, video2;
+    let video1Playing = writable(false);
+    let video1Loaded = writable(false);
+    let video1;
+    let video2Playing = writable(false);
+    let video2Loaded = writable(false);
+    let video2;
     let offset = 0;
-    let videosPlayed = false; // Flag to track if videos are played
+    
   
-    // Function to handle video play on user interaction
-    function playVideos() {
-        if (!videosPlayed) {
-            video1.loop();
-            video2.loop();
-            videosPlayed = true;
-        }
-    }
-  
-    // p5.js sketch function
+    // Sketch function for p5.js
     function sketch(p) {
         let videoWidth, videoHeight;
-
-        p.setup = function () {
-            // Create canvas
-            let tempVideo = document.createElement("video");
-            tempVideo.src = videoFile;
-            tempVideo.onloadedmetadata = () => {
-                videoWidth = tempVideo.videoWidth;
-                videoHeight = tempVideo.videoHeight;
+  
+        p.setup = () => {
+            // Create a temporary video element to get metadata
+            let temp1Video = document.createElement("video");
+            let temp2Video = document.createElement("video");
+            temp1Video.src = videoFile;
+            temp2Video.src = videoFile;
+            temp1Video.onloadedmetadata = () => {
+                videoWidth = temp1Video.videoWidth;
+                videoHeight = temp1Video.videoHeight;
                 let aspectRatio = videoWidth / videoHeight;
-
-                // Calculate canvas size based on window width
+  
+                // Calculate video size based on window size
                 let calculatedWidth = screenSize < 768 ? screenSize : screenSize * 0.6;
-
-                // Enforce a minimum height of 300px
-                let calculatedHeight = Math.max(300, calculatedWidth / aspectRatio);
-
-                // Create canvas based on calculated width and height
+                let calculatedHeight = Math.max(500, calculatedWidth / aspectRatio);
+                // Create p5 canvas based on calculated width and height
                 p.createCanvas(calculatedWidth, calculatedHeight);
                 p.pixelDensity(1);
+  
+                // Set up the video in p5
+                video1 = p.createVideo(videoFile, () => {
+                    video1.size(p.width, p.height);
+                    video1.hide();
+                    video1.volume(0);
+                    video1.loop();
+                    video1.autoplay = true;
+                    video1.play();
+                    video1Loaded.set(true);
+                });
+  
+                video1.onplay = () => {
+                    video1Playing.set(true);
+                };
+            };
 
-                // Load video files
-                video1 = p.createVideo(videoFile);
-                video2 = p.createVideo(videoFile);
-                video1.hide();
-                video2.hide();
-
-                // Play videos on user interaction (mouse press)
-                p.mousePressed = playVideos;
-            }
+            temp2Video.onloadedmetadata = () => {
+                videoWidth = temp2Video.videoWidth;
+                videoHeight = temp2Video.videoHeight;
+                let aspectRatio = videoWidth / videoHeight;
+  
+                // Calculate video size based on window size
+                let calculatedWidth = screenSize < 768 ? screenSize : screenSize * 0.6;
+                let calculatedHeight = Math.max(500, calculatedWidth / aspectRatio);
+                // Create p5 canvas based on calculated width and height
+                p.createCanvas(calculatedWidth, calculatedHeight);
+                //p.pixelDensity(1);
+  
+                // Set up the video in p5
+                video2 = p.createVideo(videoFile, () => {
+                    video2.size(p.width, p.height);
+                    video2.hide();
+                    video2.volume(0);
+                    video2.loop();
+                    video2.autoplay = true;
+                    video2.play();
+                    video2Loaded.set(true);
+                });
+  
+                video2.onplay = () => {
+                    video2Playing.set(true);
+                };
+            };
         };
-
+  
         p.windowResized = () => {
             if (videoWidth && videoHeight) {
                 let aspectRatio = videoWidth / videoHeight;
                 let newWidth = screenSize < 768 ? screenSize : screenSize * 0.6;
-
-                // Ensure minimum height of 300px for smaller screens
-                let newHeight = Math.max(300, newWidth / aspectRatio);
-
+                let newHeight = Math.max(500, newWidth / aspectRatio);
                 p.resizeCanvas(newWidth, newHeight);
                 video1.size(p.width, p.height);
                 video2.size(p.width, p.height);
             }
         };
-
-        p.draw = function () {
+  
+        p.draw = () => {
+            // Ensure video1Loaded and video2Loaded are accessed correctly
+            if (!$video1Loaded || !$video2Loaded) {
+                p.background(0);
+                p.fill(255);
+                p.textAlign(p.CENTER, p.CENTER);
+                p.text("Loading Video...", p.width / 2, p.height / 2);
+                return;
+            }
+            
+            //console.log('draw running'); // Debugging if draw is called
             p.background(0);
-
-            // Draw the first (top) video with some transparency (blending effect)
             p.filter(p.INVERT);
-            p.tint(255, 150); // Adjust the second argument to control transparency of the top video
-            p.image(video1, 0, 0);
-
-            // Update the offset based on the slider value passed from Svelte
-            offset = p.map(sliderValue, 0, 100, -p.width / 4, p.width / 4);
-
-            // Draw the second (bottom) video with a bit more transparency if needed
-            p.tint(255, 200); // Adjust transparency for the second video
-            p.image(video2, p.width / 4 + offset, 0); // Move only the second video
+            p.tint(255, 150);
+            p.image(video1, 0, 0); // Draw the video frame
+            offset = p.map($displaceValue, 0, 100, -p.width / 4, p.width / 4);
+            //console.log('displace', $displaceValue, offset); // Check displaceValue and offset
+            p.tint(255, 200);
+            p.image(video2, p.width/4 + offset, 0);
+            
         };
+  
+        p.mousePressed = () => {
+            if (!$video1Playing) {
+                video1.play();
+            }
+            if (!$video2Playing) {
+                video2.play();
+            }
+        }
     }
 </script>
+  
+<svelte:window bind:innerWidth={screenSize}/>
 
-<svelte:window  bind:innerWidth={screenSize}/>
-<main>
-    <P5 {sketch} />
-</main>
-
-
+<P5 {sketch} />
 
   
