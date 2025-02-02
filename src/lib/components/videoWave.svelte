@@ -3,10 +3,11 @@
     //import videoFile from "../videos/scene7b.mp4";
     import P5 from "p5-svelte";
     import { createNoise2D } from "simplex-noise";
+    import { get } from "svelte/store";
 
     export let noiseValue = 0;
     let rippleStrength = writable(0.5);
-    $: noiseValue, $rippleStrength = noiseValue;
+    $: noiseValue, rippleStrength.set(noiseValue);
 
     const simplex = createNoise2D();
     let videoPlaying = writable(false);
@@ -61,7 +62,7 @@
         };
 
         p.draw = () => {
-            if (!$videoLoaded) {
+            if (!get(videoLoaded)) {
                 p.background(0);
                 p.fill(255);
                 p.textAlign(p.CENTER, p.CENTER);
@@ -69,9 +70,9 @@
                 return;
             }
 
-            $rippleStrength = p.map(noiseValue, 0, 100, 0, 1);
-            console.log($rippleStrength);
-            ripple = $rippleStrength;
+            rippleStrength.set(p.map(noiseValue, 0, 100, 0, 1));
+           // console.log($rippleStrength);
+            ripple = get(rippleStrength);
   
             p.background(0);
             p.image(video, 0, 0);
@@ -101,7 +102,7 @@
         };
 
         p.mousePressed = () => {
-            if (!videoPlaying) {
+            if (!get(videoPlaying)) {
                 video.play();
             }
         };

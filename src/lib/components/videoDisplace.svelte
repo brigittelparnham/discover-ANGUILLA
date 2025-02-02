@@ -1,11 +1,12 @@
 <script>
     import { writable } from "svelte/store";
     import P5 from "p5-svelte";
+    import { get } from "svelte/store";
     //import videoFile from "../videos/scene7a.mp4";
   
     export let noiseValue = 0;
     let displaceValue = writable(0);  // blurAmount for controlling blur
-    $: noiseValue, $displaceValue = noiseValue;
+    $: noiseValue, displaceValue.set(noiseValue);
     let screenSize;
   
     let video1Playing = writable(false);
@@ -97,7 +98,7 @@
   
         p.draw = () => {
             // Ensure video1Loaded and video2Loaded are accessed correctly
-            if (!$video1Loaded || !$video2Loaded) {
+            if (!get(video1Loaded) || !get(video2Loaded)) {
                 p.background(0);
                 p.fill(255);
                 p.textAlign(p.CENTER, p.CENTER);
@@ -110,7 +111,7 @@
             p.filter(p.INVERT);
             p.tint(255, 150);
             p.image(video1, 0, 0); // Draw the video frame
-            offset = p.map($displaceValue, 0, 100, -p.width / 4, p.width / 4);
+            offset = p.map(get(displaceValue), 0, 100, -p.width / 4, p.width / 4);
             //console.log('displace', $displaceValue, offset); // Check displaceValue and offset
             p.tint(255, 200);
             p.image(video2, p.width/4 + offset, 0);
@@ -118,10 +119,10 @@
         };
   
         p.mousePressed = () => {
-            if (!$video1Playing) {
+            if (!get(video1Playing)) {
                 video1.play();
             }
-            if (!$video2Playing) {
+            if (!get(video2Playing)) {
                 video2.play();
             }
         }

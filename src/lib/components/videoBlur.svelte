@@ -1,11 +1,12 @@
 <script>
   import { writable } from "svelte/store";
   import P5 from "p5-svelte";
+  import { get } from "svelte/store";
  //import videoFile from "../videos/scene1a.mp4";
 
   export let noiseValue = 0;
   let blurAmount = writable(0);  // blurAmount for controlling blur
-  $: noiseValue, $blurAmount = noiseValue;
+  $: noiseValue, blurAmount.set(noiseValue);
   let screenSize;
 
   let videoPlaying = writable(false);
@@ -62,7 +63,7 @@
       };
 
       p.draw = () => {
-          if (!$videoLoaded) {
+          if (!get(videoLoaded)) {
               p.background(0);
               p.fill(255);
               p.textAlign(p.CENTER, p.CENTER);
@@ -74,11 +75,11 @@
           p.image(video, 0, 0); // Draw the video frame
 
           // Apply the blur effect based on the noiseValue
-          p.filter(p.BLUR, $blurAmount);  // Apply blur effect controlled by noiseValue
+          p.filter(p.BLUR, get(blurAmount));  // Apply blur effect controlled by noiseValue
       };
 
       p.mousePressed = () => {
-          if (!videoPlaying) {
+          if (!get(videoPlaying)) {
               video.play();
           
       };
