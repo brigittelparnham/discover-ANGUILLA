@@ -155,7 +155,7 @@
 
 
     .nav-item.scene-0{
-      width:25%;
+      width:18%;
     }
 
     .nav-item.scene-1{
