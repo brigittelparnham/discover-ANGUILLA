@@ -217,7 +217,7 @@
   position: relative;
     top: 0px;
     width: 100%;
-    min-height: 300px;
+    min-height: 400px;
     /* padding-top: 56.25%; */
     transition: height 0.3s ease-in-out;
     overflow: hidden;
